@@ -5,11 +5,7 @@ import { useChain } from "@cosmos-kit/react";
 import { auction } from "@chalabi/gravity-bridgejs/dist/codegen";
 import { Auction } from "@chalabi/gravity-bridgejs/dist/codegen/auction/v1/auction";
 import { getDenominationInfo, formatTokenAmount } from "../config/denoms";
-import {
-  createAuthEndpoint,
-  DEFAULT_RPC_ENDPOINT,
-  FALLBACK_RPC_ENDPOINT,
-} from "../config/auth";
+import { DEFAULT_RPC_ENDPOINT } from "../config/endpoints";
 import { FaSyncAlt } from "react-icons/fa";
 import { HamburgerIcon } from "@chakra-ui/icons";
 
@@ -80,39 +76,6 @@ const gravitybridge = { auction };
 const createRPCQueryClient =
   gravitybridge.auction.ClientFactory.createRPCQueryClient;
 
-// Helper function to create RPC client with auth headers
-const createAuthenticatedRPCClient = async (endpoint: string) => {
-  // If using the proxy, don't add auth headers (proxy handles it)
-  const isUsingProxy =
-    endpoint.includes("/api/rpc-proxy") ||
-    endpoint.includes("localhost:3000/api/rpc-proxy");
-
-  let finalEndpoint: string;
-
-  if (isUsingProxy) {
-    finalEndpoint = endpoint;
-  } else {
-    const endpointConfig = createAuthEndpoint(endpoint);
-    // If createAuthEndpoint returns an HttpEndpoint object, extract the URL
-    if (typeof endpointConfig === "object" && endpointConfig.url) {
-      finalEndpoint = endpointConfig.url;
-    } else {
-      finalEndpoint = endpointConfig as string;
-    }
-  }
-
-  // Create the client with the endpoint configuration
-  try {
-    const client = await createRPCQueryClient({
-      rpcEndpoint: finalEndpoint,
-    });
-    return client;
-  } catch (error) {
-    console.error("Failed to create RPC client:", error);
-    throw error;
-  }
-};
-
 export default function Home() {
   const { tx } = useTx("gravitybridge");
 
@@ -138,9 +101,9 @@ export default function Home() {
     setIsLoading(true);
 
     try {
-      const clientAuction = await createAuthenticatedRPCClient(
-        DEFAULT_RPC_ENDPOINT
-      );
+      const clientAuction = await createRPCQueryClient({
+        rpcEndpoint: DEFAULT_RPC_ENDPOINT,
+      });
 
       // Fetch all data in parallel to minimize total request time
       const [

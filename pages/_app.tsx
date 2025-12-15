@@ -5,7 +5,6 @@ import { ChainProvider } from "@cosmos-kit/react";
 import { ChakraProvider } from "@chakra-ui/react";
 import {
   defaultTheme,
-  createAuthEndpoint,
   DEFAULT_RPC_ENDPOINT,
   DEFAULT_REST_ENDPOINT,
 } from "../config";
@@ -40,36 +39,14 @@ function CreateCosmosApp({ Component, pageProps }: AppProps) {
     },
   };
 
-  // Create endpoint configurations
-  const rpcEndpointConfig = createAuthEndpoint(DEFAULT_RPC_ENDPOINT);
-  const restEndpointConfig = createAuthEndpoint(DEFAULT_REST_ENDPOINT);
-
-  // Extract URLs from endpoint configurations
-  const rpcEndpoint =
-    typeof rpcEndpointConfig === "object" && rpcEndpointConfig.url
-      ? rpcEndpointConfig.url
-      : (rpcEndpointConfig as string);
-  const restEndpoint =
-    typeof restEndpointConfig === "object" && restEndpointConfig.url
-      ? restEndpointConfig.url
-      : (restEndpointConfig as string);
-
-  // Validate endpoints
-  if (!rpcEndpoint || !restEndpoint) {
-    console.error("Invalid endpoint configuration:", {
-      rpcEndpoint,
-      restEndpoint,
-    });
-  }
-
   return (
     <ChakraProvider theme={defaultTheme}>
       <ChainProvider
         endpointOptions={{
           endpoints: {
             gravitybridge: {
-              rpc: [rpcEndpoint],
-              rest: [restEndpoint],
+              rpc: [DEFAULT_RPC_ENDPOINT],
+              rest: [DEFAULT_REST_ENDPOINT],
             },
           },
           isLazy: true,
