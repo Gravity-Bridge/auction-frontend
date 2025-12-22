@@ -46,6 +46,15 @@ export const chainDenoms: ChainDenominations = {
       logoURI: 'https://assets.coingecko.com/coins/images/325/thumb/Tether-logo.png?1598003707',
       priceDenom: 'tether'
     },
+    gravity0xdC035D45d973E3EC169d2276DDab16f1e407384F: {
+      name: 'USDS',
+      denom: 'gravity0xdC035D45d973E3EC169d2276DDab16f1e407384F',
+      symbol: 'USDS',
+      coinId: 'usds',
+      decimals: 18,
+      logoURI: 'https://assets.coingecko.com/coins/images/39926/thumb/usds.webp?1726666683',
+      priceDenom: 'usds'
+    },
     gravity0xEa5A82B35244d9e5E48781F00b11B14E627D2951: {
         name: 'ATOM-ETH',
         denom: 'gravity0xEa5A82B35244d9e5E48781F00b11B14E627D2951',
